@@ -127,6 +127,6 @@ void loop() {
   if(MiniR4.PS2.Button(PSB_PAD_UP)) MiniR4.RC2.setAngle(upper_angle);//Press the up arrow button can move the robotic arm to the highest position(Avoiding bumping into barriers)
   if(MiniR4.PS2.Button(PSB_PAD_LEFT)) MiniR4.RC2.setAngle(center_angle);//Press the left arrow button can move the robotic arm to the center position(Capturing the blocks on the stand)
   if(MiniR4.PS2.Button(PSB_PAD_DOWN)) MiniR4.RC2.setAngle(bottom_angle);//Press the down arrow button can move the robotic arm to the lowest position(Capturing the blocks on the ground)
-  if(MiniR4.PS2.Button(PSB_R1)) MiniR4.RC3.setAngle(shovel_up);//Press button R1 can evaluate the shovel
+  if(MiniR4.PS2.Button(PSB_R1)) MiniR4.RC3.setAngle(shovel_up);//Press button R1 can ascent the shovel
   if(MiniR4.PS2.Button(PSB_R2)) MiniR4.RC3.setAngle(shovel_down);//Press button R2 can lower the shovel
 }
