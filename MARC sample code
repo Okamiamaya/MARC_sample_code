@@ -2,16 +2,17 @@
 
 //Adjustment variables
 int left_speed=95, right_speed=-100;//Speed of the DC motor
-int open_angle=80, close_angle=0;//Angle of the claw
-int upper_angle=130, center_angle=75, bottom_angle=55;//Height position angle of the robotic arm
+int open_angle=150, close_angle=0;//Angle of the claw
+int upper_angle=180, center_angle=30, bottom_angle=15;//Height position angle of the robotic arm
+int shovel_up=120, shovel_autonomic=40, shovel_down=0;//Height position angle of the shovel
 
 //Function bases
 //Initializing function
 void MiniR4_Servo_motor_initialize(){//Initializing robot
   MiniR4.RC1.setAngle(open_angle);//Claw
   MiniR4.RC2.setAngle(upper_angle);//Robotic arm
-  MiniR4.RC3.setAngle(0);//Unknown default
-  MiniR4.RC4.setAngle(0);//Unknown default
+  MiniR4.RC3.setAngle(shovel_autonomic);//Unknown default
+  MiniR4.RC4.setAngle(180-shovel_autonomic);//Unknown default
 }
 
 //Autonomic mode functions
@@ -42,13 +43,15 @@ void MiniR4_DC_motor_right_n(double sec){//Robot turning right
 }
 void MiniR4_Servo_motor_gain(){//Grabbing blocks on the stand
   MiniR4.RC2.setAngle(center_angle);
+  delay(700);
   MiniR4.RC1.setAngle(close_angle);
+  delay(700);
   MiniR4.RC2.setAngle(upper_angle);
+  delay(700);
 }
 void MiniR4_Servo_motor_place(){//Placing blocks on the platform
-  MiniR4.RC2.setAngle(center_angle);
   MiniR4.RC1.setAngle(open_angle);
-  MiniR4.RC2.setAngle(upper_angle);
+  delay(500);
 }
 
 //Main robot system
@@ -63,29 +66,48 @@ void setup() {
 void loop() {
   MiniR4.PS2.read_gamepad(false, 0);//Gaining joystick's signal
 
-  //Autonomic mode
+  //Autonomic left mode(Discuss the strategy with the campanion before the competition)
   if(MiniR4.PS2.Button(PSB_TRIANGLE)){
     //Gaining block at the center
-    MiniR4_DC_motor_forward_n(350);
+    MiniR4_DC_motor_forward_n(200);
     MiniR4_DC_motor_brake_b(true);
     MiniR4_Servo_motor_gain();
     //Placing block on the platform
-    MiniR4_DC_motor_back_n(50);
-    MiniR4_DC_motor_left_n(500);
-    MiniR4_DC_motor_forward_n(50);
+    MiniR4_DC_motor_back_n(120);
     MiniR4_DC_motor_brake_b(true);
     MiniR4_Servo_motor_place();
-    //Gaining block at the left/right(Discuss the strategy with the campanion before the competition)
-    MiniR4_DC_motor_back_n(70);
-    MiniR4_DC_motor_right_n(210);//Left_mode
-    //MiniR4_DC_motor_left_n(230);//Right_mode
-    MiniR4_DC_motor_forward_n(750);
+    //Gaining block at the left
+    MiniR4_DC_motor_forward_n(150);
+    MiniR4_DC_motor_left_n(295);
+    MiniR4_DC_motor_forward_n(905);
     MiniR4_DC_motor_brake_b(true);
     MiniR4_Servo_motor_gain();
-    //Placing block on the platfom(Discuss the strategy with the campanion before the competition)
-    MiniR4_DC_motor_left_n(350);//Left
-    //MiniR4_DC_motor_right_n(290);//Right_mode
-    MiniR4_DC_motor_forward_n(400);
+    //Placing block on the platfom
+    MiniR4_DC_motor_right_n(200);
+    MiniR4_DC_motor_back_n(650);
+    MiniR4_DC_motor_brake_b(true);
+    MiniR4_Servo_motor_place();
+  }
+
+  //Autonomic right mode(Discuss the strategy with the campanion before the competition)
+  if(MiniR4.PS2.Button(PSB_CROSS)){
+    //Gaining block at the center
+    MiniR4_DC_motor_forward_n(200);
+    MiniR4_DC_motor_brake_b(true);
+    MiniR4_Servo_motor_gain();
+    //Placing block on the platform
+    MiniR4_DC_motor_back_n(120);
+    MiniR4_DC_motor_brake_b(true);
+    MiniR4_Servo_motor_place();
+    //Gaining block at the right
+    MiniR4_DC_motor_forward_n(150);
+    MiniR4_DC_motor_right_n(255);
+    MiniR4_DC_motor_forward_n(940);
+    MiniR4_DC_motor_brake_b(true);
+    MiniR4_Servo_motor_gain();
+    //Placing block on the platfom
+    MiniR4_DC_motor_left_n(200);
+    MiniR4_DC_motor_back_n(650);
     MiniR4_DC_motor_brake_b(true);
     MiniR4_Servo_motor_place();
   }
@@ -105,4 +127,6 @@ void loop() {
   if(MiniR4.PS2.Button(PSB_PAD_UP)) MiniR4.RC2.setAngle(upper_angle);//Press the up arrow button can move the robotic arm to the highest position(Avoiding bumping into barriers)
   if(MiniR4.PS2.Button(PSB_PAD_LEFT)) MiniR4.RC2.setAngle(center_angle);//Press the left arrow button can move the robotic arm to the center position(Capturing the blocks on the stand)
   if(MiniR4.PS2.Button(PSB_PAD_DOWN)) MiniR4.RC2.setAngle(bottom_angle);//Press the down arrow button can move the robotic arm to the lowest position(Capturing the blocks on the ground)
+  if(MiniR4.PS2.Button(PSB_R1)) MiniR4.RC3.setAngle(shovel_up);//Press button R1 can evaluate the shovel
+  if(MiniR4.PS2.Button(PSB_R2)) MiniR4.RC3.setAngle(shovel_down);//Press button R2 can lower the shovel
 }
