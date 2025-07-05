@@ -15,4 +15,7 @@ Left button:Setting the robotic arm to the center position(Capturing the blocks 
 Down button:Setting the robotic arm to the lowest position(Capturing the blocks on the ground)
 L1 button:Opening the claw
 L2 button:Closing the claw
-Triangle button:Autonomic mode
+R1 button:Ascenting the shovel
+R2 button:Lowering the shovel
+Triangle button:Autonomic mode(left)
+Cross button:Autonomic mode(right)
