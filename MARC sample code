@@ -4,7 +4,7 @@
 int left_speed=90, right_speed=-100;//Speed of the DC motor
 int open_angle=50, close_angle=155;//Angle of the claw
 int upper_angle=180, center_angle=40, bottom_angle=25;//Height position angle of the robotic arm
-int shovel_up=60, shovel_autonomic=150, shovel_down=180;//Height position angle of the shovel
+int shovel_up=60, shovel_autonomic=135, shovel_down=180;//Height position angle of the shovel
 
 //Function bases
 //Initializing function
@@ -134,5 +134,9 @@ void loop() {
   if(MiniR4.PS2.Button(PSB_R2)){//Press button R2 can lower the shovel
     MiniR4.RC3.setAngle(shovel_down);
     MiniR4.RC4.setAngle(180-shovel_down);
+  }
+  if(MiniR4.PS2.Button(PSB_CIRCLE)){//Press button R2 can lower the shovel
+    MiniR4.RC3.setAngle(shovel_autonomic);
+    MiniR4.RC4.setAngle(180-shovel_autonomic);
   }
 }
